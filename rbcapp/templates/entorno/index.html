@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="/entorno/add/" class="btn btn-success">Adicionar</a>
+
+<hr>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Variavel Entorno</th>
+            <th>Cor em Hexadecimal</th>
+            <th>Cor em RGB</th>
+			<th>Ações</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for dado in dados %}
+			<tr>
+				<td>{{dado.id}}</td>
+				<td>{{dado.variavel_entorno}}</td>
+                <td>{{ dado.cor_hex }}</td>
+                <td>{{ dado.cor_rgb }}</td>
+				<td style="width: 152px;">
+					<a href="/entorno/edit/{{dado.id}}/" class="btn btn-info">Editar</a>
+					<a href="/entorno/delete/{{dado.id}}/"class="btn btn-danger">Excluir</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

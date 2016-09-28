@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Protótipo - RBC</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+</head>
+<body>
+	<nav class="navbar navbar-default" role="navigation">
+		<ul class="nav navbar-nav">
+			<li><a href="/">Home</a></li>  
+		    <li><a href="/bacia-hidrografica">Bacias Hidrográficas</a></li>  
+		    <li><a href="/rio">Rios</a></li>  
+		    <!--<li><a href="/ponto">Pontos</a></li>
+		    <li><a href="/substancia">Substâncias</a></li>
+		    <li><a href="/coleta">Coletas</a></li>-->
+		    <li><a href="/entorno">Entornos</a></li>  
+		    <li><a href="/caso">Casos</a></li>
+            <li><a href="/monitoramento/">Monitoramento</a> </li>
+            <li><a href="/historico/">Histórico</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="/perfil/">Perfil</a></li>
+            <li><a href="/logout/">Sair</a></li>
+            {% else %}
+            <li><a href="/login/">Entrar</a></li>
+            {% endif %}
+	    </ul>
+	</nav>
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			{% block content %}
+
+			{% endblock %}
+		</div>
+	</div>
+
+    <script src="{% static "js/jquery-3.1.0.min.js" %}"></script>
+	<script src="{% static "js/prototipo.js" %}"></script>
+    <script src="{% static "js/ajax.js" %}"></script>
+</body>
+</html>

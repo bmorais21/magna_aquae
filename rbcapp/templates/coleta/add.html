@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form class="form-horizontal" role="form" action="/coleta/add/" method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="data_coleta" class="col-sm-2 control-label">Data da coleta: </label>
+            <div class="col-sm-8">
+                {{ form.data_coleta.errors }}
+                {{ form.data_coleta }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Bacia Hidrográfica: </label>
+            <div class="col-sm-8">
+                <select onchange="coleta_pesquisar_bacia()" name="bh" id="bh">
+                    <option value="selecione">Selecione uma bacia hidrografica</option>
+                    {% for bh in bhs %}
+                        <option value="{{ bh.id }}">{{ bh.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Rio: </label>
+            <div class="col-sm-8">
+                <select onchange="coleta_pesquisar_rio()" name="rio" id="rio" disabled="True">
+                    <option value="selecione">Selecione um rio</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Ponto Monitoramento: </label>
+            <div class="col-sm-8">
+                <select name="ponto" id="ponto_monitoramento" disabled="True">
+                    <option value="selecione">Selecione um ponto</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {% for s in substancias %}
+                <label for="data_coleta" class="col-sm-4 control-label">{{ s.nome }}</label>
+                <input name="substancia" type="hidden" readonly="readonly" value="{{ s.id }}">
+                <div class="col-md-1">
+                    {{ form.valor_coletado }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3 pull-right">
+                <button class="btn btn-info">Salvar</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="/rio/add/" class="btn btn-success">Adicionar</a>
+
+    <form>
+        {% csrf_token %}
+        <select onchange="rio_pesquisar_bacia()" name="bh" id="bh">
+            <option value="selecione">Selecione uma bacia hidrografica</option>
+            {% for bh in bhs %}
+                <option value="{{ bh.id }}">{{ bh.nome }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <hr>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Dimensão</th>
+            <th>Bacia Hidrográfica</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="tbrio">
+        {% for rio in dados %}
+            <tr>
+                <td>{{ rio.nome }}</td>
+                <td>{{ rio.dimensao }}</td>
+                <td>{{ rio.bacia_hidrografica }}</td>
+                <td style="width: 152px;">
+                    <a href="/rio/edit/{{ rio.id }}/" class="btn btn-info">Editar</a>
+                    <a href="/rio/delete/{{ rio.id }}/" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <a href="/ponto/" class="btn btn-success">Pontos</a>
+    <a href="/coleta/" class="btn btn-success">Coletas</a>
+{% endblock %}

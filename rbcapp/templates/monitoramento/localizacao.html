@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="/monitoramento/imagem/" method="post" class="form-horizontal" role="form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Bacia Hidrográfica: </label>
+            <div class="col-sm-8">
+                <select onchange="monitoramento_pegar_bacia()" name="bacia" id="bacia">
+                    <option value="selecione">Selecione uma bacia hidrográfica</option>
+                    {% for bacia in bacia_hidrografica %}
+                        <option value="{{ bacia.id }}">{{ bacia.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Rio: </label>
+            <div class="col-sm-8">
+                <select onchange="monitoramento_pegar_rio()" name="rio" id="rio" disabled="True">
+                    <option>Selecione um rio</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Selecione um ponto: </label>
+            <div class="col-sm-8">
+                <select onchange="monitoramento_pegar_ponto()" name="ponto" id="ponto" disabled="True">
+                    <option>Selecione um ponto</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Data coleta: </label>
+            <div class="col-sm-8">
+                <select name="data" id="data" disabled="True">
+                    <option>Selecione uma data</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4 pull-right">
+                <button type="submit" class="btn btn-info">Pesquisar Solução</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

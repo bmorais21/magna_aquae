@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="/coleta/add/" class="btn btn-success">Adicionar</a>
+
+
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Ponto</th>
+            <th>Data</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{ coleta.ponto_monitoramento }} </td>
+                <td>{{ coleta.data_coleta }}</td>
+            </tr>
+        </tbody>
+
+        <thead>
+        <tr>
+            <th>Substância</th>
+            <th>Valor Coletado</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for col in coleta_substancia %}
+            <tr>
+                <td>{{ col.substancia }}</td>
+                <td>{{ col.valor_coletado }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

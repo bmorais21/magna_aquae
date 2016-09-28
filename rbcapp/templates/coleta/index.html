@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="/coleta/add/" class="btn btn-success">Adicionar</a>
+
+
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Rio</th>
+                <th>Ponto</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for coleta in coletas %}
+            <tr>
+                <td>{{ coleta.rio }}</td>
+                <td>{{ coleta.ponto_monitoramento }} </td>
+                <td>{{ coleta.data_coleta }}</td>
+                <td> <a href="/coleta/info?id={{ coleta.id }}">Mais informações</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

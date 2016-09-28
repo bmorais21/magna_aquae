@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="/ponto/add/" class="btn btn-success">Adicionar</a>
+    <form>
+        {% csrf_token %}
+        <select onchange="ponto_pesquisar_rio()" name="ponto">
+            <option value="selecione">Selecione um rio</option>
+            {% for rio in rios %}
+                <option value="{{ rio.id }}">{{ rio.nome }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <hr>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            {#    			<th>Rio</th>#}
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="pontos">
+        </tbody>
+    </table>
+{% endblock %}
