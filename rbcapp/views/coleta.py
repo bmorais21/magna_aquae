@@ -7,7 +7,6 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic.base import View
 from django.core import serializers
 
-
 class Coleta_Listar(View):
     template = 'coleta/index.html'
     
@@ -79,17 +78,3 @@ class Coleta_Add(View):
                 coleta_substancia.save()
         
         return redirect(template)
-        
-        # class Coleta_Delete(View):
-        #     template = '/coleta/'
-        #     def get(self, request, coleta_id=None):
-        #         coleta = Coleta.objects.get(pk=coleta_id)
-        #         if coleta.id != None:
-        #             coleta.delete()
-        #         return redirect(self.template)
-        #
-        #     def post(self, request, coleta_id=None):
-        #         coleta = Coleta.objects.get(pk=coleta_id)
-        #         if coleta.id != None:
-        #             coleta.delete()
-        #         return redirect(self.template)

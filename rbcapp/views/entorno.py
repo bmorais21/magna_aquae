@@ -5,6 +5,7 @@ from rbcapp.models import Entorno
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
+
 class Entorno_Listar(View):
     template = 'entorno/index.html'
 
@@ -35,6 +36,7 @@ class Entorno_Add(View):
             entorno.save()
         return redirect(template)
 
+
 class Entorno_Edit(View):
     template = 'entorno/'
 
@@ -52,6 +54,7 @@ class Entorno_Edit(View):
             entorno.variavel_entorno = request.POST['variavel_entorno']
             entorno.save()
         return redirect(template)
+
 
 class Entorno_Delete(View):
     template = '/entorno/'

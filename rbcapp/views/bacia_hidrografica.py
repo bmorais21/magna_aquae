@@ -5,6 +5,7 @@ from rbcapp.forms.bacia_hidrografica import FormBaciaHidrografica
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
+
 class Bacia_Hidrografica_Listar(View):
     template = 'bacia-hidrografica/index.html'
     def get(self, request):
@@ -14,6 +15,7 @@ class Bacia_Hidrografica_Listar(View):
     def post(self, request):
         bh = Bacia_Hidrografica.objects.all()
         return render(request, self.template, {'dados': bh})
+
 
 class Bacia_Hidrografica_Add(View):
     template = 'bacia-hidrografica/'
@@ -31,6 +33,7 @@ class Bacia_Hidrografica_Add(View):
             bh.save()
         return redirect(template)
 
+
 class Bacia_Hidrografica_Edit(View):
     template = 'bacia-hidrografica/'
     def get(self, request, bh_id=None):
@@ -47,6 +50,7 @@ class Bacia_Hidrografica_Edit(View):
             bh.nome = request.POST['nome']
             bh.save()
         return redirect(template)
+
 
 class Bacia_Hidrografica_Delete(View):
     template = '/bacia-hidrografica/'

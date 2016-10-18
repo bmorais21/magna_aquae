@@ -81,61 +81,6 @@ class Caso_Delete(View):
         return redirect(self.template)
 
 
-# def listar(request):
-# 	casos = Casos.objects.order_by('classificacao_iap', 'classificacao_iva', 'entorno', 'risco').all()
-# 	return render(request, 'caso/localizacao.html', {'dados':casos})
-#
-#
-# def add(request):
-# 	if request.method == 'POST':
-# 		form = FormCaso(request.POST)
-# 		if form.is_valid():
-# 			caso = Casos()
-# 			caso.classificacao_iap = request.POST['iap']
-# 			caso.classificacao_iva = request.POST['iva']
-# 			caso.entorno           = Entorno.objects.get(pk=request.POST['entorno'])
-# 			caso.risco             = request.POST['risco']
-# 			caso.solucao_sugerida  = request.POST['solucao_sugerida']
-# 			caso.save()
-# 			return redirect('/caso/')
-# 	else:
-# 		form = FormCaso()
-# 	return render(request, 'caso/add.html', {'form': form})
-#
-#
-# def edit(request, caso_id):
-# 	caso = Casos.objects.get(pk=caso_id)
-# 	if request.method == 'POST':
-# 		form = FormCaso(request.POST)
-# 		if form.is_valid():
-# 			caso.classificacao_iap = request.POST['iap']
-# 			caso.classificacao_iva = request.POST['iva']
-# 			caso.entorno           = Entorno.objects.get(pk=request.POST['entorno'])
-# 			caso.risco             = request.POST['risco']
-# 			caso.solucao_sugerida  = request.POST['solucao_sugerida']
-# 			caso.save()
-# 			return redirect('/caso/')
-# 	else:
-# 		data = {
-# 			'iap': caso.classificacao_iap,
-# 			'iva': caso.classificacao_iva,
-# 			'risco': caso.risco,
-# 			'entorno': caso.entorno,
-# 			'solucao_sugerida': caso.solucao_sugerida
-# 		}
-# 		form = FormCaso(initial=data)
-#
-# 	return render(request, 'caso/edit.html', {
-# 		'form': form,
-# 		'caso_id': caso.id
-# 	})
-#
-# def delete(request, caso_id):
-# 	caso = Casos.objects.get(pk=caso_id)
-# 	if caso.id != None:
-# 		caso.delete()
-# 		return redirect('/caso/')
-
 class Caso_Pesquisar(View):
     
     def get(self, request):
@@ -159,12 +104,3 @@ class Caso_Pesquisar(View):
             resultado['monitoramento'] = monitoramento
 
         return render(request, 'caso/resultado.html', {'resultado': resultado})
-
-# def utilizar_solucao(request, caso_id, monitoramento_id):
-#     caso = Casos.objects.get(pk=caso_id)
-#     monitoramento = Monitoramento.objects.get(pk=monitoramento_id)
-#     monitoramento.solucao_sugerida = caso.solucao_sugerida
-#     monitoramento.risco = caso.risco
-#     monitoramento.save()
-#
-#     return redirect('/caso/pesquisar/')
