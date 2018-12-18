@@ -4,14 +4,22 @@ from rbcapp.forms.entorno import FormEntorno
 from rbcapp.models import Entorno
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class Entorno_Listar(View):
     template = 'entorno/index.html'
 
     def get(self, request):
         entornos = Entorno.objects.all()
-        return render(request, self.template, {'dados': entornos})
+        paginator = Paginator(entornos, 10)
+        page = request.GET.get('page')
+        try:
+            dados = paginator.page(page)
+        except PageNotAnInteger:
+            dados = paginator.page(1)
+        except EmptyPage:
+            dados = paginator.page(paginator.num_pages)
+        return render(request, self.template, {'dados': dados})
 
     def post(self, request):
         entornos = Entorno.objects.all()
@@ -31,8 +39,7 @@ class Entorno_Add(View):
         if form.is_valid():
             entorno = Entorno()
             entorno.variavel_entorno = request.POST['variavel_entorno']
-            entorno.cor_hex = request.POST['cor_hex']
-            entorno.cor_rgb = request.POST['cor_rgb']
+            entorno.cor_hex = request.POST['cor']
             entorno.save()
         return redirect(template)
 
@@ -58,6 +65,7 @@ class Entorno_Edit(View):
 
 class Entorno_Delete(View):
     template = '/entorno/'
+
     def get(self, request, entorno_id=None):
         entorno = Entorno.objects.get(pk=entorno_id)
         if entorno.id != None:

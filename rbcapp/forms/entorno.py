@@ -10,13 +10,7 @@ class FormEntorno(forms.Form):
         )
     )
 
-    cor_hex = forms.CharField(
-        widget=forms.TextInput(
-            attrs={'class': 'form-control'}
-        )
-    )
-
-    cor_rgb = forms.CharField(
+    cor = forms.CharField(
         widget=forms.TextInput(
             attrs={'class': 'form-control'}
         )

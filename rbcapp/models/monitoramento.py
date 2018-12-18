@@ -4,26 +4,36 @@ from django.db import models
 import math
 from ponto_monitoramento import Ponto_Monitoramento
 from coleta import Coleta
+from entorno import Entorno
+from imagem import Imagem
+from django.db import connection
 
 
 class Monitoramento(models.Model):
     data_monitoramento = models.DateField('Data do Monitoramento')
     ponto_monitoramento = models.ForeignKey(Ponto_Monitoramento)
+    coleta = models.ForeignKey(Coleta)
+    imagem = models.ForeignKey(Imagem, blank=True, null=True)
+    entorno = models.ForeignKey(Entorno, blank=True, null=True)
     classificacao_iap = models.CharField(max_length=45, null=True)
     classificacao_iva = models.CharField(max_length=45, null=True)
+    risco = models.CharField(max_length=1, null=True)
+    solucao_sugerida = models.TextField(null=True)
+    
 
     def _get_valor_coletado_substancia(self, nome_substancia):
-        sql = ''' SELECT m.id, s.nome, c.valor_coletado FROM rbcapp_monitoramento m
-			INNER JOIN rbcapp_ponto_monitoramento p ON p.id = m.ponto_monitoramento_id
-			INNER JOIN rbcapp_coleta c ON p.id = c.ponto_monitoramento_id
-			INNER JOIN rbcapp_substancia s ON s.id = c.substancia_id
-			WHERE s.nome = '%s' AND m.data_monitoramento = '%s'
-			AND c.ponto_monitoramento_id = %d ''' % (
-        nome_substancia, self.data_monitoramento, int(self.ponto_monitoramento.id))
+        sql = ''' select rbcapp_monitoramento.id, nome, valor_coletado
+              from rbcapp_coleta, rbcapp_coleta_substancia, rbcapp_substancia, rbcapp_monitoramento
+              where rbcapp_coleta_substancia.coleta_id=rbcapp_monitoramento.coleta_id and
+              rbcapp_coleta_substancia.substancia_id=rbcapp_substancia.id and
+              rbcapp_coleta.id=rbcapp_monitoramento.coleta_id and
+              rbcapp_monitoramento.id=%i and
+              rbcapp_substancia.nome='%s';''' % (int(self.id), nome_substancia)
 
-        substancia = Monitoramento.objects.raw(sql)
-        substancia = list(substancia)
-        valor_coletado_da_substancia = substancia[0].valor_coletado
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        substancia = cursor.fetchall()
+        valor_coletado_da_substancia = substancia[0][2]
         return valor_coletado_da_substancia
 
     def _get_valores_iqa(self):

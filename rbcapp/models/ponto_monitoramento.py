@@ -10,4 +10,5 @@ class Ponto_Monitoramento(models.Model):
     rio = models.ForeignKey(Rio)
 
     def __unicode__(self):
-        return str(self.id) + ' - (' + str(self.latitude) + ', ' + str(self.longitude) + ')'
+        # return str(self.id) + ' - (' + str(self.latitude) + ', ' + str(self.longitude) + ')'
+        return '(' + str(self.latitude) + ', ' + str(self.longitude) + ')'

@@ -5,13 +5,24 @@ from rbcapp.forms.ponto import FormPonto
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic.base import View
 from django.core import serializers
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class Ponto_Listar(View):
     template = 'ponto/index.html'
 
     def get(self, request):
         rios = Rio.objects.all()
-        return render(request, self.template, {'rios': rios})
+        bhs = Bacia_Hidrografica.objects.all()
+        ponto = Ponto_Monitoramento.objects.all()
+        paginator = Paginator(ponto, 10)
+        page = request.GET.get('page')
+        try:
+            dados = paginator.page(page)
+        except PageNotAnInteger:
+            dados = paginator.page(1)
+        except EmptyPage:
+            dados = paginator.page(paginator.num_pages)
+        return render(request, self.template, {'rios': rios, 'bhs': bhs, 'dados': dados})
 
     def post(self, request):
         id = request.POST['ponto']
@@ -23,15 +34,7 @@ class Ponto_Add(View):
     template = 'ponto/'
 
     def get(self, request):
-        if 'bh' in request.GET:
-            id = request.GET['bh']
-            rios = Rio.objects.filter(bacia_hidrografica=id)
-            json = serializers.serialize("json", rios)
-            return HttpResponse(json)
-        self.template += 'add.html'
-        form = FormPonto()
-        bhs = Bacia_Hidrografica.objects.all()
-        return render(request, self.template, {'form': form, 'bhs': bhs})
+        pass
 
     def post(self, request):
         template = '/ponto/'
@@ -47,22 +50,20 @@ class Ponto_Add(View):
 class Ponto_Edit(View):
     template = 'ponto/'
 
-    def get(self, request, ponto_id=None):
-        self.template += 'edit.html/'
-        ponto = Ponto_Monitoramento.objects.get(pk=ponto_id)
-        form = FormPonto(initial={'latitude': ponto.latitude, 'longitude': ponto.longitude, 'rio': ponto.rio})
-        return render(request, self.template, {'form': form, 'ponto_id': ponto.id})
+    def get(self, request):
+        ponto_id = request.GET['ponto_id']
+        ponto = Ponto_Monitoramento.objects.filter(id=ponto_id)
+        json = serializers.serialize("json", ponto)
+        return HttpResponse(json)
 
-    def post(self, request, ponto_id=None):
-        template = '/ponto/'
+    def post(self, request):
+        ponto_id = request.POST['ponto_id']
         ponto = Ponto_Monitoramento.objects.get(pk=ponto_id)
-        form = FormPonto(request.POST)
-        if form.is_valid():
-            ponto.latitude = request.POST['latitude']
-            ponto.longitude = request.POST['longitude']
-            ponto.rio = Rio.objects.get(pk=request.POST['rio'])
-            ponto.save()
-        return redirect(template)
+        ponto.latitude = request.POST['latitude']
+        ponto.longitude = request.POST['longitude']
+        # ponto.rio = Rio.objects.get(pk=request.POST['rio'])
+        ponto.save()
+        return redirect('ponto_listar')
 
 class Ponto_Delete(View):
     template = '/ponto/'
